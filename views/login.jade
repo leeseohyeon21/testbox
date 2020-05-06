@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    form#frm_login(action='/login', method='post', name='frm_login')
+        h1.text-center Node JS Passport #{title}
+        input(type='text', name='username', placeholder='ID', required='required')
+        input(type='password', name='password', placeholder='Password', required='required')
+        input(type='submit', value='Login')
+        a(href='/auth/login/naver') Naver
+
+script(src='jquery-validation/dist/jquery.validate.min.js')
+script(src='javascripts/login.js')
