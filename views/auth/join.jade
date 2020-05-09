@@ -1,7 +1,7 @@
-extends layout
+extends ../layout
 
 block content
-    form#frm_join(action='/join', method='post', name='frm_join')
+    form#frm_join(action='/auth/join', method='post', name='frm_join')
         h1.text-center Node JS Passport #{title}
         input(type='text', name='username', placeholder='ID', required='required')
         input(type='text', name='nickname', placeholder='Nickname', required='required')

@@ -10,11 +10,20 @@ var passport = require('passport')
 var cookieSession = require('cookie-session');
 var flash = require('connect-flash');
 
+// if login success, store user in session
+passport.serializeUser(function(user, done){
+  done(null, user);
+});
+
+// read user in every page accesses
+passport.deserializeUser(function(user, done){
+  done(null, user);
+});
+
 /*router*/
 var index = require('./routes/index');
-var users = require('./routes/users');
-var api = require('./routes/api');
-var files = require('./routes/files');
+var auth = require('./routes/auth/urls');
+var drive = require('./routes/drive/urls');
 /*router*/
 
 var app = express();
@@ -37,7 +46,7 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(cookieSession({
   keys: ['testbox'],
   cookie: {
-    maxAge: 100 * 60 * 60
+    maxAge: 1000 * 60 * 60
   }
 }));
 app.use(flash());
@@ -45,11 +54,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', index);
-app.use('/users', users);
-app.use('/api/v1', api);
-app.use('/files', files);
-app.use('/files/detail', express.static('public/images'));
-app.use('/download', express.static('public/images'));
+app.use('/auth', auth);
+app.use('/drive', drive);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,7 +1,7 @@
-extends layout
+extends ../layout
 
 block content
-  form(action="/files/upload", method="post", enctype="multipart/form-data")
+  form(action="/drive/files/upload", method="post", enctype="multipart/form-data")
     input(type="file", name="image")
     button Upload
   
@@ -16,9 +16,9 @@ block content
       -each file in files
         tr
           td(width='300')
-            a(href='/files/detail/#{file.filename}')= file.filename
+            a(href='/drive/files/detail/#{file.filename}')= file.filename
           td(width='100')= file.date
           td(width='100')
-            a(href='files/download/#{file.filename}')= "download"
+            a(href='/drive/files/download/#{file.filename}')= "download"
           td(width='100')
-            a(href='files/delete/#{file.filename}')= "delete"
+            a(href='/drive/files/delete/#{file.filename}')= "delete"
