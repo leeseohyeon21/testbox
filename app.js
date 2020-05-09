@@ -14,6 +14,7 @@ var flash = require('connect-flash');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
+var files = require('./routes/files');
 /*router*/
 
 var app = express();
@@ -46,6 +47,9 @@ app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/api/v1', api);
+app.use('/files', files);
+app.use('/files/detail', express.static('public/images'));
+app.use('/download', express.static('public/images'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

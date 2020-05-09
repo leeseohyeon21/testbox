@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  form(action="/files/upload", method="post", enctype="multipart/form-data")
+    input(type="file", name="image")
+    button Upload
+  
+  table
+    thead
+      tr
+        th(width='300') 파일명
+        th(width='100') 업로드일
+        th(width='100') 다운로드
+        th(width='100') 삭제
+    tbody
+      -each file in files
+        tr
+          td(width='300')
+            a(href='/files/detail/#{file.filename}')= file.filename
+          td(width='100')= file.date
+          td(width='100')
+            a(href='files/download/#{file.filename}')= "download"
+          td(width='100')
+            a(href='files/delete/#{file.filename}')= "delete"
