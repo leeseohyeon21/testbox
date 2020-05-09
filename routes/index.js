@@ -107,7 +107,7 @@ passport.use(new NaverStrategy({
   clientSecret: secret_config.federation.naver.secret_id,
   callbackURL: secret_config.federation.naver.callback_url
 }, function(accessToken, refreshToken, profile, done){
-  var _profile = profile.json;
+  var _profile = profile._json;
 
   console.log('Naver login info');
   console.info(_profile);
@@ -150,6 +150,50 @@ router.post('/login', passport.authenticate('local', {failureRedirect: '/login',
   function(req, res){
     res.redirect('/');
   });
+
+router.get('/join', function(req, res){
+  if (req.user != undefined){
+    res.redirect('/');
+  }else{
+    res.render('join', {title: 'Join'});
+  }
+});
+
+var isNew = function(req, res, next){
+  connection.query('SELECT * FROM user WHERE userId = (?);', req.body.username, function(err, result){
+    if(err){
+      console.log('err: '+err)
+      res.redirect('/join');
+    }else{
+      if (result.length === 0)
+        return next();
+      else{
+        console.log('이미 사용중인 아이디입니다');
+        res.redirect('/join');
+      }
+    }
+  });
+};
+
+router.post('/join', isNew, function(req, res){
+    var userId = req.body.username;
+    var nickname = req.body.nickname;
+    var password = bcrypt.hashSync(req.body.password, 10);
+    var email = req.body.email;
+  
+    var sql = 'INSERT INTO user VALUES (?)';
+    connection.query(sql, [[userId, nickname, password, email]], function(err, result){
+      if (err){
+        console.log('err :' + err);
+        console.log('db error');
+        res.redirect('/join');
+      } 
+      else{
+        console.log('회원가입 성공');
+        res.redirect('/login');
+      }
+    })
+});
 
 /* Log out */
 router.get('/logout', function(req, res){
