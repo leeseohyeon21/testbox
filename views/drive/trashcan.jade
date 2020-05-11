@@ -1,0 +1,21 @@
+extends ../layout
+
+block content 
+    //a(href='/drive/trashcan/delete/all')= "휴지통 비우기"
+    br
+    table
+        thead
+        tr
+            th(width='300') 파일명
+            th(width='100') 삭제된날짜
+            th(width='100') 복구
+            th(width='100') 영구삭제
+        tbody
+        -each trash in trashes
+            tr
+            td(width='300')= trash.trashname
+            td(width='100')= trash.date
+            td(width='100')
+                a(href='/drive/trashcan/restore/#{trash.trashname}')= "restore"
+            td(width='100')
+                a(href='/drive/trashcan/delete/#{trash.trashname}')= "delete"
